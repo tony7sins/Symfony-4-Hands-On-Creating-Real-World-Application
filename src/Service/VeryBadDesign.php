@@ -12,6 +12,6 @@ class VeryBadDesign implements ContainerAwareInterface
      */
     public function setContainer(ContainerInterface $container = null)
     {
-       $container->get('app.greeting');
+//        $container->get('app.greeting');
     }
 }
