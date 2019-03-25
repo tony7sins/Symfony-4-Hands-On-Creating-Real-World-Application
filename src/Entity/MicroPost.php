@@ -27,20 +27,41 @@ class MicroPost
      */
     private $time;
 
-    // public function getId(): ?int
-    // {
-    //     return $this->id;
-    // }
-    // 
-    // public function getText(): ?string
-    // {
-    //     return $this->text;
-    // }
-    //
-    // public function setText(?string $text): self
-    // {
-    //     $this->text = $text;
-    //
-    //     return $this;
-    // }
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    /**
+      * @return mixed
+      */
+     public function getText()
+     {
+         return $this->text;
+     }
+
+     /**
+      * @param mixed $text
+      */
+     public function setText($text): void
+     {
+         $this->text = $text;
+     }
+
+    /**
+     * @return mixed
+     */
+    public function getTime()
+    {
+        return $this->time;
+    }
+
+    /**
+     * @param mixed $time
+     */
+    public function setTime($time): void
+    {
+        $this->time = $time;
+    }
 }
