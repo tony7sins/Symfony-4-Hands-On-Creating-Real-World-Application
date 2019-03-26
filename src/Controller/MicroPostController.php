@@ -66,6 +66,7 @@ class MicroPostController
 
     return new Response($html);
   }
+
   /**
    * @Route ("/add", name="micro_post_add")
    */
@@ -94,5 +95,20 @@ class MicroPostController
       'micro-post/add.html.twig',
       ['form' => $form->createView()]
     ));
+  }
+
+  /**
+   * @Route("/{id}", name="micro_post_post")
+   */
+  public function post(MicroPost $post)
+  {
+    return new Response(
+      $this->twig->render(
+        'micro-post/post.html.twig',
+        [
+          'post' => $post
+        ]
+      )
+    );
   }
 }
