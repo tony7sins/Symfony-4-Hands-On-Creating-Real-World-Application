@@ -14,10 +14,13 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  */
 class MicroPostRepository extends ServiceEntityRepository
 {
-    public function __construct(RegistryInterface $registry)
-    {
-        parent::__construct($registry, MicroPost::class);
-    }
+  public function __construct(RegistryInterface $registry)
+  {
+      parent::__construct(
+          $registry,
+          MicroPost::class
+      );
+  }
 
     // /**
     //  * @return MicroPost[] Returns an array of MicroPost objects

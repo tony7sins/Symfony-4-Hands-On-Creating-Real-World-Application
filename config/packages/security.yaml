@@ -1,4 +1,9 @@
 security:
+
+    # role_hierarchy:
+    #     ROLE_ADMIN:       ROLE_USER
+    #     ROLE_SUPER_ADMIN: [ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH]
+
     encoders:
         App\Entity\User: bcrypt
     # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
@@ -40,3 +45,4 @@ security:
     access_control:
         # - { path: ^/micro-post, roles: ROLE_USER }
         # - { path: ^/profile, roles: ROLE_USER }
+        #

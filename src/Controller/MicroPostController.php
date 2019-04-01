@@ -70,9 +70,13 @@ class MicroPostController
    */
   public function index()
   {
-    $html = $this->twig->render('micro-post/index.html.twig', [
-      'posts' => $this->microPostRepository->findBy([], ['time' => 'DESC'])
-    ]);
+    $html = $this->twig->render(
+      'micro-post/index.html.twig', [
+        'posts' =>
+        $this->microPostRepository->findBy([], ['time' => 'DESC'])
+      // $this->microPostRepository->findAll()
+      ]
+    );
 
     return new Response($html);
   }
