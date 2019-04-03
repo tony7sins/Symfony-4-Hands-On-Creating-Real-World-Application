@@ -4,9 +4,9 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
@@ -16,6 +16,8 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 class User implements UserInterface, \Serializable
 
 {
+    const ROLE_USER = 'ROLE_USER';
+    const ROLE_ADMIN = 'ROLE_ADMIN';
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -57,6 +59,12 @@ class User implements UserInterface, \Serializable
      * @ORM\OneToMany(targetEntity="App\Entity\MicroPost", mappedBy="user")
      */
     private $posts;
+    
+    /**
+     * @var array
+     * @ORM\Column(type="simple_array")
+     */
+    private $roles;
 
     public function __construct()
     {
@@ -65,13 +73,15 @@ class User implements UserInterface, \Serializable
 
     public function getRoles()
     {
-      // return [
-      //   'ROLE_USER'
-      // ];
-      $roles[] = 'ROLE_USER';
-      return array_unique($roles);
-      // return toArray('ROLE_USER');
-
+      return $this->roles;
+    }
+    
+    /**
+     * @param array $roles
+     */
+    public function setRoles(array $roles): void
+    {
+      $this->roles = $roles;
     }
 
     public function getPassword()
