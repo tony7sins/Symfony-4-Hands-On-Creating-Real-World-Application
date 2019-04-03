@@ -89,7 +89,7 @@ class MicroPost
     /**
      * Get the value of User
      *
-     * @return mixed
+     * @return User
      */
     public function getUser()
     {
