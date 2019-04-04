@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -66,9 +67,29 @@ class User implements UserInterface, \Serializable
      */
     private $roles;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\User", mappedBy="following")
+     */
+    private $followers;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\User", inversedBy="followers")
+     * @ORM\JoinTable(name="following",
+     *  joinColumns={
+     *    @ORM\JoinColumn(name="user_id", referencedColumnName="id")
+     *  },
+     *  inverseJoinColumns={
+     *    @ORM\JoinColumn(name="following_user_id", referencedColumnName="id")
+     *  }
+     * )
+     */
+    private $following;
+
     public function __construct()
     {
       $this->posts = new ArrayCollection();
+      $this->followers = new ArrayCollection();
+      $this->following = new ArrayCollection();
     }
 
     public function getRoles()
@@ -207,5 +228,22 @@ class User implements UserInterface, \Serializable
     {
         return $this->posts;
     }
+
+    /**
+     * @return Collection
+     */
+    public function getFollowers()
+    {
+        return $this->followers;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getFollowing()
+    {
+        return $this->following;
+    }
+    
 
 }
