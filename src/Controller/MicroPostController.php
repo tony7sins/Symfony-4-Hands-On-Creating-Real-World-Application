@@ -16,6 +16,7 @@ use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 
 /**
@@ -139,11 +140,15 @@ class MicroPostController
 
   /**
    * @Route ("/add", name="micro_post_add")
+   * @Security("is_granted('ROLE_USER')")
    */
-  public function add(Request $request)
+  public function add(Request $request, TokenStorageInterface $tokenStorage)
   {
+    $user = $tokenStorage->getToken()->getUser();
+
     $microPost = new MicroPost();
     $microPost->setTime(new \DateTime());
+    $microPost->setUser($user);
 
     $form = $this->formFactory->create(
             MicroPostType::class,
