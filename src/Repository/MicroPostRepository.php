@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\MicroPost;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Common\Collections\Collection;
 
 /**
  * @method MicroPost|null find($id, $lockMode = null, $lockVersion = null)
@@ -22,22 +23,21 @@ class MicroPostRepository extends ServiceEntityRepository
       );
   }
 
-    // /**
-    //  * @return MicroPost[] Returns an array of MicroPost objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    /**
+     * @return MicroPost[] Returns an array of MicroPost objects
+    */
+    public function findAllByUsers(Collection $users)
     {
-        return $this->createQueryBuilder('m')
-            ->andWhere('m.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('m.id', 'ASC')
-            ->setMaxResults(10)
+        // dump($users);die;
+        return $this->createQueryBuilder('p')
+            ->select('p')
+            ->where( 'p.user IN (:following) ')
+            ->setParameter('following', $users)
+            ->orderBy('p.time', 'DESC')
             ->getQuery()
             ->getResult()
         ;
     }
-    */
 
     /*
     public function findOneBySomeField($value): ?MicroPost

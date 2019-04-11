@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\User;
 use App\Entity\MicroPost;
 use App\Form\MicroPostType;
 use App\Repository\MicroPostRepository;
@@ -17,7 +18,6 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use App\Entity\User;
 
 
 /**
@@ -75,13 +75,26 @@ class MicroPostController
   /**
    * @Route("/", name="micro_post_index")
    */
-  public function index()
+  public function index(TokenStorageInterface $tokenStorage)
   {
+    $currentUser = $tokenStorage->getToken()->getUser();
+
+    if($currentUser instanceof User){
+      $posts = 
+        $this->microPostRepository
+          ->findAllByUsers(
+            $currentUser->getFollowing()
+          )
+      ;
+    } else {
+      $posts = 
+        $this->microPostRepository->findBy([], ['time' => 'DESC']);
+        // $this->microPostRepository->findAll();
+    }
+
     $html = $this->twig->render(
       'micro-post/index.html.twig', [
-        'posts' =>
-        $this->microPostRepository->findBy([], ['time' => 'DESC'])
-      // $this->microPostRepository->findAll()
+        'posts' => $posts,
       ]
     );
 
