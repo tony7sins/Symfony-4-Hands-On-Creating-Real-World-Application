@@ -29,7 +29,7 @@ class MicroPostRepository extends ServiceEntityRepository
     public function findAllByUsers(Collection $users)
     {
         // dump($users);die;
-        return $this->createQueryBuilder('p')
+         $result = $this->createQueryBuilder('p')
             ->select('p')
             ->where( 'p.user IN (:following) ')
             ->setParameter('following', $users)
@@ -37,8 +37,9 @@ class MicroPostRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult()
         ;
+        return $result;
     }
-
+    
     /*
     public function findOneBySomeField($value): ?MicroPost
     {

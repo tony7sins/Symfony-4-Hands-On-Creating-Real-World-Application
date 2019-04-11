@@ -18,7 +18,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-
+use App\Repository\UserRepository;
 
 /**
  * @Route("/micro-post")
@@ -75,9 +75,11 @@ class MicroPostController
   /**
    * @Route("/", name="micro_post_index")
    */
-  public function index(TokenStorageInterface $tokenStorage)
+  public function index(TokenStorageInterface $tokenStorage, UserRepository $userRepository)
   {
     $currentUser = $tokenStorage->getToken()->getUser();
+
+    $usersToFollow = [];
 
     if($currentUser instanceof User){
       $posts = 
@@ -86,6 +88,7 @@ class MicroPostController
             $currentUser->getFollowing()
           )
       ;
+      $usersToFollow = count($posts) === 0 ? $userRepository->findAllWithMoreThan5PostsExceptUser($currentUser) : [];
     } else {
       $posts = 
         $this->microPostRepository->findBy([], ['time' => 'DESC']);
@@ -95,6 +98,7 @@ class MicroPostController
     $html = $this->twig->render(
       'micro-post/index.html.twig', [
         'posts' => $posts,
+        'usersToFollow' => $usersToFollow,
       ]
     );
 
