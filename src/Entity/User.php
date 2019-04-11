@@ -245,5 +245,17 @@ class User implements UserInterface, \Serializable
         return $this->following;
     }
     
-
+    /**
+     * Undocumented function
+     *
+     * @param User $userToFollow
+     * @return void
+     */
+    public function follow(User $userToFollow)
+    {
+      if($this->getFollowing()->contains($userToFollow)){
+        return;
+      }
+      $this->getFollowing()->add($userToFollow);
+    }
 }
