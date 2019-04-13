@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -61,20 +63,20 @@ class MicroPost
     }
 
     /**
-      * @return mixed
-      */
-     public function getText()
-     {
-         return $this->text;
-     }
+     * @return mixed
+     */
+    public function getText()
+    {
+        return $this->text;
+    }
 
-     /**
-      * @param mixed $text
-      */
-     public function setText($text): void
-     {
-         $this->text = $text;
-     }
+    /**
+     * @param mixed $text
+     */
+    public function setText($text): void
+    {
+        $this->text = $text;
+    }
 
     /**
      * @return mixed
@@ -91,7 +93,7 @@ class MicroPost
     {
         $this->time = $time;
     }
-    
+
     /**
      * @ORM\PrePersist()
      */
@@ -105,7 +107,7 @@ class MicroPost
      *
      * @param mixed $user
      */
-    public function setUser($user):void
+    public function setUser($user): void
     {
         $this->user = $user;
     }
@@ -125,18 +127,16 @@ class MicroPost
      *
      * @return Collection
      */
-    public function getLikedBy()
+    public function getLikedBy(): Collection
     {
         return $this->likedBy;
     }
 
     public function like(User $user)
     {
-        if($this->likedBy->contains($user)) {
+        if ($this->likedBy->contains($user)) {
             return;
         }
         $this->likedBy->add($user);
     }
-
-
 }
