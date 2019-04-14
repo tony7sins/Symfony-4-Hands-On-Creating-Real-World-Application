@@ -38,11 +38,14 @@ services:
         public: true
         alias: App\Service\Greeting
 
+    App\EventListener\LikeNotificationSubscriber:
+        tags:
+            - { name: doctrine.event_subscriber, connection: default }
+    
+
     # App\Service\Greeting:
     #   arguments:
     #     $message: '%hello_message%'
-
-
 
     # App\Controller\BlogController: ['@App\Service\Greeting']
 
