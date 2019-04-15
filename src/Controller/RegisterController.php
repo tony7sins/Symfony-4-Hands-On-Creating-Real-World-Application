@@ -10,6 +10,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use App\Security\TokenGenerator;
 
 /**
  *
@@ -22,7 +23,8 @@ class RegisterController extends AbstractController
   public function register(
     UserPasswordEncoderInterface $passwordEncoder, 
     Request $request,
-    EventDispatcherInterface $eventDispatcher
+    EventDispatcherInterface $eventDispatcher,
+    TokenGenerator $tokenGenerator
   ) {
 
     $user = new User();
@@ -40,8 +42,7 @@ class RegisterController extends AbstractController
         $user->getPlainPassword()
       );
       $user->setPassword($password);
-      $user->setRoles([User::ROLE_USER]);
-
+      $user->setConfirmationToken($tokenGenerator->getRandomSecureToken(30));
 
       $entityManager = $this->getDoctrine()->getManager();
       $entityManager->persist($user);

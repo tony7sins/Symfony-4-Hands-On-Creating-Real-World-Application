@@ -5,6 +5,8 @@ namespace App\Controller;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Response;
+use App\Repository\UserRepository;
+use Doctrine\ORM\EntityManagerInterface;
 
 /**
  *
@@ -45,5 +47,32 @@ class SecurityController
   public function logout()
   {
 
+  }
+
+  /**
+   * @Route("/confirm/{token}", name="security_confirm")
+   */
+  public function confirm(
+    string $token, 
+    UserRepository $userRepository,
+    EntityManagerInterface $em
+  ) {
+    $user = $userRepository->findOneBy([
+      'confirmationToken' => $token
+    ]);
+
+    if(null !== $user){
+      $user->setEnabled(true);
+      $user->setConfirmationToken('');
+
+      $em->flush();
+    }
+
+    return new Response($this->twig->render(
+      'security/confirmation.html.twig', 
+      [
+        'user' => $user
+      ]
+    ));
   }
 }
