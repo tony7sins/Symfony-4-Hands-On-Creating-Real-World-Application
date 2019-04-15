@@ -40,6 +40,7 @@ class RegisterController extends AbstractController
         $user->getPlainPassword()
       );
       $user->setPassword($password);
+      $user->setRoles([User::ROLE_USER]);
 
 
       $entityManager = $this->getDoctrine()->getManager();
